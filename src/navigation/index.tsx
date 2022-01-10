@@ -1,0 +1,61 @@
+import * as React from 'react';
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FiltersScreen from "../screens/FiltersScreen/FiltersScreen"
+import ProfileScreen from "../screens/ProfileScreen/ProfileScreen"
+import SearchScreen from "../screens/SearchScreen/SearchScreen"
+import HomeScreen from "../screens/HomeScreen/HomeScreen"
+import { createStackNavigator } from '@react-navigation/stack';
+import { View } from 'react-native';
+// import HomeIcon from "../assets/icons/home.svg"
+
+const SearchStack = createNativeStackNavigator();
+
+function SearchStackScreen() {
+  return (
+    <SearchStack.Navigator 
+    screenOptions={{ headerTintColor: "#FFFFFF", headerStyle: { backgroundColor: "#6483DD" } }}>
+      <SearchStack.Screen name="Search" component={SearchScreen} />
+      <SearchStack.Screen name="Filters" component={FiltersScreen} />
+    </SearchStack.Navigator>
+  );
+}
+
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator 
+    screenOptions={{ headerTintColor: "#FFFFFF", headerStyle: { backgroundColor: "#6483DD" } }}>
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Profile" component={ProfileScreen} />
+    </HomeStack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+function Tabs() {
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="SearchTab" component={SearchStackScreen} />
+      <Tab.Screen name="HomeTab" component={HomeStackScreen} />
+    </Tab.Navigator>
+  );
+}
+
+const RootStack = createStackNavigator();
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <RootStack.Navigator screenOptions={{headerShown: false}}>
+          <RootStack.Screen name="Tabs" component={Tabs} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+}
