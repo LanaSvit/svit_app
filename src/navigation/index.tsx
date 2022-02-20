@@ -9,6 +9,7 @@ import SearchScreen from "../screens/SearchScreen/SearchScreen"
 import HomeScreen from "../screens/HomeScreen/HomeScreen"
 import { createStackNavigator } from '@react-navigation/stack';
 import { View } from 'react-native';
+import MediaScreen from '../screens/MediaScreen/MediaScreen';
 // import HomeIcon from "../assets/icons/home.svg"
 
 const SearchStack = createNativeStackNavigator();
@@ -35,13 +36,23 @@ function HomeStackScreen() {
   );
 }
 
+function MediaStackScreen() {
+  return (
+    <HomeStack.Navigator 
+    screenOptions={{ headerTintColor: "#FFFFFF", headerStyle: { backgroundColor: "#6483DD" } }}>
+      <HomeStack.Screen name="Media" component={MediaScreen} />
+    </HomeStack.Navigator>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="SearchTab" component={SearchStackScreen} />
-      <Tab.Screen name="HomeTab" component={HomeStackScreen} />
+      <Tab.Screen name="Search" component={SearchStackScreen} />
+      <Tab.Screen name="Media" component={MediaStackScreen} />
+      <Tab.Screen name="Home" component={HomeStackScreen} />
     </Tab.Navigator>
   );
 }
