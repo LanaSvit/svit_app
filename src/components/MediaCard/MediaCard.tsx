@@ -9,6 +9,7 @@ export type CardColor = "black" | "white";
 interface Props {
   title: string;
   author: string;
+  labelText: string;
   onPress?: () => void;
 }
 
@@ -16,6 +17,7 @@ const MediaCard = (props: Props): React.ReactElement => {
   const {
     title,
     author,
+    labelText,
     onPress
   } = props;
   return (
@@ -27,8 +29,7 @@ const MediaCard = (props: Props): React.ReactElement => {
         <Text style={styles.title}>{title}</Text>
         <View style={styles.bottomSection}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Label text="Sci-Fi" size={LabelSize.Medium} color={LabelColor.Pink} containerStyle={styles.label} disabled/>
-            <Label text="Philosophy" size={LabelSize.Medium} color={LabelColor.Pink} containerStyle={styles.label} disabled />
+            <Label text={labelText} size={LabelSize.Medium} color={LabelColor.Pink} containerStyle={styles.label} disabled/>
           </ScrollView>
           <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.actionButtonDots}>...</Text>

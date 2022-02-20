@@ -8,8 +8,7 @@ import ProfileScreen from "../screens/ProfileScreen/ProfileScreen"
 import SearchScreen from "../screens/SearchScreen/SearchScreen"
 import HomeScreen from "../screens/HomeScreen/HomeScreen"
 import { createStackNavigator } from '@react-navigation/stack';
-import { View } from 'react-native';
-import MediaScreen from '../screens/MediaScreen/MediaScreen';
+import MediaScreenContainer from '../screens/MediaScreen/MediaScreen.container';
 // import HomeIcon from "../assets/icons/home.svg"
 
 const SearchStack = createNativeStackNavigator();
@@ -40,7 +39,7 @@ function MediaStackScreen() {
   return (
     <HomeStack.Navigator 
     screenOptions={{ headerTintColor: "#FFFFFF", headerStyle: { backgroundColor: "#6483DD" } }}>
-      <HomeStack.Screen name="Media" component={MediaScreen} />
+      <HomeStack.Screen name="Media" component={MediaScreenContainer} />
     </HomeStack.Navigator>
   );
 }
