@@ -9,6 +9,9 @@ import SearchScreen from "../screens/SearchScreen/SearchScreen"
 import HomeScreen from "../screens/HomeScreen/HomeScreen"
 import { createStackNavigator } from '@react-navigation/stack';
 import MediaScreenContainer from '../screens/MediaScreen/MediaScreen.container';
+import { ApolloProvider } from "@apollo/client";
+import { client } from '../graphqlClient';
+
 // import HomeIcon from "../assets/icons/home.svg"
 
 const SearchStack = createNativeStackNavigator();
@@ -60,6 +63,7 @@ const RootStack = createStackNavigator();
 
 export default function App() {
   return (
+    <ApolloProvider client={client}>
     <SafeAreaProvider>
       <NavigationContainer>
         <RootStack.Navigator screenOptions={{headerShown: false}}>
@@ -67,5 +71,6 @@ export default function App() {
         </RootStack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
+    </ApolloProvider>
   );
 }
