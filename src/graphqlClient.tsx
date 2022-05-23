@@ -4,6 +4,24 @@ import {
 } from "@apollo/client";
 
 export const client = new ApolloClient({
-    uri: 'https://48p1r2roz4.sse.codesandbox.io',
-    cache: new InMemoryCache()
+    uri: "https://rickandmortyapi.com/graphql",
+    cache: new InMemoryCache({
+        typePolicies: {
+          Query: {
+            fields: {
+              characters: {
+                keyArgs: false,
+                merge(existing, incoming) {
+                  const data = existing ? existing : { results: [] };
+                  return {
+                    ...existing,
+                    results: [...data.results, ...incoming.results]
+                  };
+                }
+                
+              }
+            }
+          }
+        }
+      })
 });
