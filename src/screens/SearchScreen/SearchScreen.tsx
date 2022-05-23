@@ -5,26 +5,22 @@ import MovieCard from '../../components/MovieCard/MovieCard';
 import TitleItem from '../../components/TitleItem/TitleItem';
 import episodesQuery from '../../graphql/episodes.query.gql';
 import {likedMoviesVar} from '../../reactiveVariables/reactiveVariables';
+import { CharactersQueryData, EpisodesQueryData } from '../../typings/grqphql';
 import styles from './SearchScreen.styles';
 import { useFetchCharaters } from './useFetchCharacters';
 
 function SearchScreen({navigation}) {
-  const {data, loading} = useQuery(episodesQuery);
+  const {data, loading} = useQuery<EpisodesQueryData>(episodesQuery);
 
   const {dataCharacters, loadingCharacters, fetchMoreCharacters} = useFetchCharaters();
+  const characters = dataCharacters?.characters.results;
 
   const onPressHeart = (title: string) => {
     const likedMovies = likedMoviesVar();
-    if (!likedMovies.includes(title)) {
-          likedMoviesVar([...likedMovies, title]);
+    if (!likedMovies.includes(title)) {      
+      likedMoviesVar([...likedMovies, title]);
     }
   };
-
-  if (loading || loadingCharacters) {
-    return loading;
-  }
-
-  const characters = dataCharacters.characters.results;
 
   function isScrollviewCloseToRight({
     layoutMeasurement,
@@ -37,7 +33,11 @@ function SearchScreen({navigation}) {
       contentSize.width - paddingToRight
     );
   }
-  
+
+  if ((!data && loading) || (loadingCharacters && dataCharacters)) {
+    return loading;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Button
@@ -49,19 +49,13 @@ function SearchScreen({navigation}) {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <MovieCard
             title="Death in Venice"
-            director="Luchino Viscontis"></MovieCard>
+            subtitle="Luchino Viscontis"></MovieCard>
           <MovieCard
             title="Death in Venice"
-            director="Luchino Viscontis"></MovieCard>
+            subtitle="Luchino Viscontis"></MovieCard>
           <MovieCard
             title="Death in Venice"
-            director="Luchino Viscontis"></MovieCard>
-          <MovieCard
-            title="Death in Venice"
-            director="Luchino Viscontis"></MovieCard>
-          <MovieCard
-            title="Death in Venice"
-            director="Luchino Viscontis"></MovieCard>
+            subtitle="Luchino Viscontis"></MovieCard>
         </ScrollView>
 
         <TitleItem titleName="Rick And Morty characters" />
@@ -70,30 +64,31 @@ function SearchScreen({navigation}) {
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={event => {
           if (isScrollviewCloseToRight(event.nativeEvent)) {
-            console.log("fetchMoreCharacters", dataCharacters.characters.info.next);
             fetchMoreCharacters({
               variables: {
-                page: dataCharacters.characters.info.next
+                page: dataCharacters?.characters.info.next
               }
             });;
           }
         }}>
-        {characters.map(character => (
+        {characters?.map((character: CharactersQueryData["characters"]["results"][0]) => (
             <MovieCard
               title={character.name}
-              director={character.status}
-              imageUrl={character.image}>
+              subtitle={character.status}
+              imageUrl={character.image}
+              onPressHeart={() => onPressHeart(character.name)}
+              >
             </MovieCard>
           ))}
         </ScrollView>
 
         <TitleItem titleName="Rick And Morty episodes" />
         <ScrollView horizontal >
-          {data.episodes.results.map((episode, item) => (
+          {data?.episodes.results.map((episode, item) => (
             <MovieCard
               key={item}
               title={episode.name}
-              director={episode.episode}
+              subtitle={episode.episode}
               onPressHeart={() => onPressHeart(episode.name)}>
             </MovieCard>
           ))}

@@ -17,7 +17,6 @@ query Characters($page: Int) {
       gender
       image
     }
-    
   }
 }
 `
